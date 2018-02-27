@@ -189,7 +189,7 @@ final class StatusTableViewController: ChartsTableViewController {
         let availableWidth = (currentContext.newSize ?? self.tableView.bounds.size).width - self.charts.fixedHorizontalMargin
         let totalHours = floor(Double(availableWidth / minimumSegmentWidth))
         let futureHours = ceil((deviceManager.loopManager.insulinModelSettings?.model.effectDuration ?? .hours(4)).hours)
-        let historyHours = max(1, totalHours - futureHours)
+        let historyHours = max(2.5, totalHours - futureHours)
 
         var components = DateComponents()
         components.minute = 0

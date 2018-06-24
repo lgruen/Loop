@@ -35,6 +35,7 @@ final class LoopDataManager {
     private let logger: CategoryLogger
     
     fileprivate var glucoseUpdated: Bool // flag used to decide if integral RC should be updated or not
+    fileprivate var lastRetrospectiveCorrectionGlucose: GlucoseValue?
     fileprivate var initializeIntegralRetrospectiveCorrection: Bool // flag used to decide if integral RC should be initialized upon Loop relaunch or for other reasons
     var overallRetrospectiveCorrection: HKQuantity? // value used to display overall RC effect to the user
 
@@ -61,6 +62,7 @@ final class LoopDataManager {
         self.lastTempBasal = lastTempBasal
         self.settings = settings
         self.glucoseUpdated = false
+        self.lastRetrospectiveCorrectionGlucose = nil
         self.initializeIntegralRetrospectiveCorrection = true
         self.overallRetrospectiveCorrection = nil
 
@@ -994,6 +996,13 @@ extension LoopDataManager {
             self.glucoseUpdated = false
             self.retrospectivePredictedGlucose = nil
             return // too few glucose values, erroneous insulin and carb effects, skip retrospective correction
+        }
+        
+        // check if retrospective glucose correction has already been updated for this glucose change
+        if( self.lastRetrospectiveCorrectionGlucose?.endDate == change.end.endDate ) {
+            self.glucoseUpdated = false
+        } else {
+            self.lastRetrospectiveCorrectionGlucose = change.end
         }
         
         let glucoseUnit = HKUnit.milligramsPerDeciliter

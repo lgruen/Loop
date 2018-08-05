@@ -36,7 +36,7 @@ struct LoopSettings: Equatable {
 
     let minimumChartWidthPerHour: CGFloat = 50
 
-    let statusChartMinimumHistoryDisplay: TimeInterval = .hours(1)
+    let statusChartMinimumHistoryDisplay: TimeInterval = .hours(3)
 }
 
 
